@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Planes de Entrenamiento</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-4">Planes de Entrenamiento</h1>
+    
+    <!-- Formulario para crear un nuevo plan de entrenamiento -->
+    <form th:action="@{/api/trainingplans}" method="post">
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Crear Plan de Entrenamiento</button>
+    </form>
+
+    <h2 class="my-4">Lista de Planes de Entrenamiento</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Mesociclos</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="plan : ${trainingPlans}">
+            <td th:text="${plan.id}"></td>
+            <td th:text="${plan.name}"></td>
+            <td th:each="mesocycle : ${plan.mesocycles}" th:text="${mesocycle.name}">Mesociclo</td>
+            <td>
+                <a th:href="@{/api/trainingplans/{id}(id=${plan.id})}" class="btn btn-secondary">Editar</a>
+                <form th:action="@{/api/trainingplans/{id}(id=${plan.id})}" method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

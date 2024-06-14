@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mesociclos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<a th:href="@{/mesocycles}"></a>
+
+<div class="container">
+    <h1 class="my-4">Mesociclos</h1>
+    
+    <!-- Formulario para crear un nuevo mesociclo -->
+    <form th:action="@{/mesocycles}" method="post">
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <input type="text" class="form-control" id="description" name="description" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Crear Mesociclo</button>
+    </form>
+
+    <h2 class="my-4">Lista de Mesociclos</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Microciclos</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="mesocycle : ${mesocycles}">
+            <td th:text="${mesocycle.id}"></td>
+            <td th:text="${mesocycle.name}"></td>
+            <td th:text="${mesocycle.description}"></td>
+            <td>
+                <ul>
+                    <li th:each="microcycle : ${mesocycle.microcycles}" th:text="${microcycle.name}"></li>
+                </ul>
+            </td>
+            <td>
+                <a th:href="@{/mesocycles/{id}(id=${mesocycle.id})}" class="btn btn-secondary">Editar</a>
+                <form th:action="@{/mesocycles/{id}(id=${mesocycle.id})}" method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
